@@ -58,19 +58,34 @@ update : Action -> Model -> Model
 update action model =
   case action of
     AddItem ->
-      if model.newItemHeading == happy then
-        updateHappy model
-      else if model.newItemHeading == meh then
-        updateMeh model
-      else if model.newItemHeading == sad then
-        updateSad model
-      else model
+      addItemToModel model
     UpdateNewItem str ->
       {model | newItemText = str}
     UpdateNewItemHeading str ->
       {model | newItemHeading = str}
     CrossOff id ->
       crossOffItemInModel model id
+
+addItemToModel : Model -> Model
+addItemToModel model =
+  let
+    item = {newItem | id = model.newItemID, text = model.newItemText}
+    happyColumn = addItemToColumn model.happy model.newItemHeading item
+    mehColumn = addItemToColumn model.meh model.newItemHeading item
+    sadColumn = addItemToColumn model.sad model.newItemHeading item
+  in {model |
+    newItemID = model.newItemID + 1,
+    newItemText = "",
+    happy = happyColumn,
+    meh = mehColumn,
+    sad = sadColumn
+  }
+
+addItemToColumn : Column -> String -> Item -> Column
+addItemToColumn column heading item =
+  if column.heading == heading
+  then {column | items = column.items ++ [item]}
+  else column
 
 crossOffItemInModel : Model -> Int -> Model
 crossOffItemInModel model itemID =
@@ -89,40 +104,6 @@ crossOffItem item itemID =
   if item.id == itemID
   then {item | crossedOff = (not item.crossedOff)}
   else item
-
--- oh god how do i not duplicate all this?
-updateHappy model =
-  let
-    old = model.happy
-    item = {newItem | id = model.newItemID, text = model.newItemText}
-    new = {old | items = item :: old.items}
-  in {model |
-    newItemID = model.newItemID + 1,
-    newItemText = "",
-    happy = new
-  }
-
-updateMeh model =
-  let
-    old = model.meh
-    item = {newItem | id = model.newItemID, text = model.newItemText}
-    new = {old | items = item :: old.items}
-  in {model |
-    newItemID = model.newItemID + 1,
-    newItemText = "",
-    meh = new
-  }
-
-updateSad model =
-  let
-    old = model.sad
-    item = {newItem | id = model.newItemID, text = model.newItemText}
-    new = {old | items = item :: old.items}
-  in {model |
-    newItemID = model.newItemID + 1,
-    newItemText = "",
-    sad = new
-  }
 
 ---- VIEW ----
 

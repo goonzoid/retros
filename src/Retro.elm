@@ -103,10 +103,10 @@ itemList items =
 
 itemEntry : Signal.Address Action -> String -> Html
 itemEntry address item =
-  div [] [itemHeadingSelector address item, itemTextField address item]
+  div [] [itemHeadingSelector address, itemTextField address item]
 
-itemHeadingSelector : Signal.Address Action -> String -> Html
-itemHeadingSelector address heading =
+itemHeadingSelector : Signal.Address Action -> Html
+itemHeadingSelector address =
   select
     [ Events.on "input" Events.targetValue
         (Signal.message address << UpdateNewItemHeading)]

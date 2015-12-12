@@ -70,22 +70,22 @@ update action model =
     UpdateNewItemHeading str ->
       {model | newItemHeading = str}
     CrossOff id ->
-      updateModel model id
+      crossOffItemInModel model id
 
-updateModel : Model -> Int -> Model
-updateModel model itemID =
+crossOffItemInModel : Model -> Int -> Model
+crossOffItemInModel model itemID =
   {model |
-    happy = updateColumn model.happy itemID,
-    meh = updateColumn model.meh itemID,
-    sad = updateColumn model.sad itemID
+    happy = crossOffItemInColumn model.happy itemID,
+    meh = crossOffItemInColumn model.meh itemID,
+    sad = crossOffItemInColumn model.sad itemID
   }
 
-updateColumn : Column -> Int -> Column
-updateColumn column itemID =
-  {column | items = (List.map (\i -> updateItem i itemID) column.items)}
+crossOffItemInColumn : Column -> Int -> Column
+crossOffItemInColumn column itemID =
+  {column | items = (List.map (\i -> crossOffItem i itemID) column.items)}
 
-updateItem : Item -> Int -> Item
-updateItem item itemID =
+crossOffItem : Item -> Int -> Item
+crossOffItem item itemID =
   if item.id == itemID
   then {item | crossedOff = (not item.crossedOff)}
   else item

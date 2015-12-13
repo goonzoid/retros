@@ -141,7 +141,11 @@ itemListEntry address item =
 
 itemEntry : Signal.Address Action -> String -> Html
 itemEntry address itemText =
-  div [] [itemHeadingSelector address, itemTextField address itemText]
+  div []
+    [ itemHeadingSelector address
+    , itemTextField address itemText
+    , itemAddButton address
+    ]
 
 itemHeadingSelector : Signal.Address Action -> Html
 itemHeadingSelector address =
@@ -175,3 +179,7 @@ onEnter address value =
   Events.on "keydown"
     (Json.customDecoder Events.keyCode isEnter)
     (\_ -> Signal.message address value)
+
+itemAddButton : Signal.Address Action -> Html
+itemAddButton address =
+  button [Events.onClick address AddItem] [text "Add"]

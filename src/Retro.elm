@@ -171,8 +171,8 @@ itemTextField address itemText =
 isEnter : Int -> Result String ()
 isEnter code =
   if code == 13
-    then Ok ()
-    else Err "key code is not enter"
+  then Ok ()
+  else Err "key code is not enter"
 
 onEnter : Signal.Address a -> a -> Attribute
 onEnter address value =

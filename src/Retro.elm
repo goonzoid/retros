@@ -4,6 +4,7 @@ import Html exposing (..)
 import Html.Attributes as Attributes
 import Html.Events as Events
 import Json.Decode as Json
+import String exposing (isEmpty)
 
 ---- MODEL ----
 
@@ -58,7 +59,9 @@ update : Action -> Model -> Model
 update action model =
   case action of
     AddItem ->
-      addItemToModel model
+      if String.isEmpty model.newItemText
+      then model
+      else addItemToModel model
     UpdateNewItem str ->
       {model | newItemText = str}
     UpdateNewItemHeading str ->

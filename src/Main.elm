@@ -1,5 +1,8 @@
+module Main (..) where
+
 import Retro
 import StartApp.Simple exposing (start)
+
 
 main =
   start

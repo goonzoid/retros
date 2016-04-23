@@ -10,14 +10,17 @@ import String exposing (isEmpty)
 ---- MODEL ----
 
 
+happy : String
 happy =
   ":)"
 
 
+meh : String
 meh =
   ":|"
 
 
+sad : String
 sad =
   ":("
 
@@ -45,6 +48,7 @@ type alias Item =
   }
 
 
+emptyModel : Model
 emptyModel =
   { newItemID = 1
   , newItemText = ""
@@ -55,6 +59,7 @@ emptyModel =
   }
 
 
+newItem : Item
 newItem =
   { id = 0
   , text = ""

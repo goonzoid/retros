@@ -1,7 +1,7 @@
 module Retro (..) where
 
 import Html exposing (..)
-import Html.Attributes as Attributes
+import Html.Attributes exposing (..)
 import Html.Events as Events
 import Json.Decode as Json
 import String exposing (isEmpty)
@@ -163,7 +163,7 @@ view address model =
 columnViews : Signal.Address Action -> Model -> Html
 columnViews address model =
   div
-    [ Attributes.class "row" ]
+    [ class "row" ]
     (List.map
       (\i -> columnView address i)
       [ model.happy, model.meh, model.sad ]
@@ -173,8 +173,8 @@ columnViews address model =
 columnView : Signal.Address Action -> Column -> Html
 columnView address column =
   div
-    [ Attributes.class "columns"
-    , Attributes.style [ ( "text-align", "center" ) ]
+    [ class "columns"
+    , style [ ( "text-align", "center" ) ]
     ]
     [ (h2 [] [ text column.heading ])
     , itemList address column.items
@@ -184,7 +184,7 @@ columnView address column =
 itemList : Signal.Address Action -> List Item -> Html
 itemList address items =
   ul
-    [ Attributes.style [ ( "text-align", "left" ) ] ]
+    [ style [ ( "text-align", "left" ) ] ]
     (List.map (\i -> itemListEntry address i) items)
 
 
@@ -199,7 +199,7 @@ itemListEntry address item =
   in
     li
       [ Events.onClick address (CrossOff item.id)
-      , Attributes.style styles
+      , style styles
       ]
       [ text item.text ]
 
@@ -207,7 +207,7 @@ itemListEntry address item =
 itemInput : Signal.Address Action -> String -> Html
 itemInput address itemText =
   div
-    [ Attributes.class "row align-center" ]
+    [ class "row align-center" ]
     [ itemHeadingSelector address
     , itemTextField address itemText
     , itemAddButton address
@@ -221,8 +221,8 @@ itemHeadingSelector address =
         "input"
         Events.targetValue
         (Signal.message address << UpdateNewItemHeading)
-    , Attributes.class "columns"
-    , Attributes.class "small-1"
+    , class "columns"
+    , class "small-1"
     ]
     [ option [] [ text happy ]
     , option [] [ text meh ]
@@ -233,13 +233,13 @@ itemHeadingSelector address =
 itemTextField : Signal.Address Action -> String -> Html
 itemTextField address itemText =
   div
-    [ Attributes.class "columns"
-    , Attributes.class "small-4"
+    [ class "columns"
+    , class "small-4"
     ]
     [ input
-        [ Attributes.placeholder "wagwan?"
-        , Attributes.type' "text"
-        , Attributes.value itemText
+        [ placeholder "wagwan?"
+        , type' "text"
+        , value itemText
         , onEnter address AddItem
         , Events.on
             "input"
@@ -269,12 +269,12 @@ onEnter address value =
 itemAddButton : Signal.Address Action -> Html
 itemAddButton address =
   div
-    [ Attributes.class "columns"
-    , Attributes.class "small-1"
+    [ class "columns"
+    , class "small-1"
     ]
     [ button
         [ Events.onClick address AddItem
-        , Attributes.class "button"
+        , class "button"
         ]
         [ text "Add" ]
     ]

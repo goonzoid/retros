@@ -157,22 +157,35 @@ crossOffItem item itemID =
 
 view : Signal.Address Action -> Model -> Html
 view address model =
-  div [] [ columnViews address model, itemEntry address model.newItemText ]
+  div [] [ columnViews address model, itemInput address model.newItemText ]
 
 
 columnViews : Signal.Address Action -> Model -> Html
 columnViews address model =
-  div [] (List.map (\i -> columnView address i) [ model.happy, model.meh, model.sad ])
+  div
+    [ Attributes.class "row" ]
+    (List.map
+      (\i -> columnView address i)
+      [ model.happy, model.meh, model.sad ]
+    )
 
 
 columnView : Signal.Address Action -> Column -> Html
 columnView address column =
-  div [] [ text column.heading, itemList address column.items ]
+  div
+    [ Attributes.class "columns"
+    , Attributes.style [ ( "text-align", "center" ) ]
+    ]
+    [ (h2 [] [ text column.heading ])
+    , itemList address column.items
+    ]
 
 
 itemList : Signal.Address Action -> List Item -> Html
 itemList address items =
-  ul [] (List.map (\i -> itemListEntry address i) items)
+  ul
+    [ Attributes.style [ ( "text-align", "left" ) ] ]
+    (List.map (\i -> itemListEntry address i) items)
 
 
 itemListEntry : Signal.Address Action -> Item -> Html
@@ -191,10 +204,10 @@ itemListEntry address item =
       [ text item.text ]
 
 
-itemEntry : Signal.Address Action -> String -> Html
-itemEntry address itemText =
+itemInput : Signal.Address Action -> String -> Html
+itemInput address itemText =
   div
-    []
+    [ Attributes.class "row align-center" ]
     [ itemHeadingSelector address
     , itemTextField address itemText
     , itemAddButton address
@@ -208,6 +221,8 @@ itemHeadingSelector address =
         "input"
         Events.targetValue
         (Signal.message address << UpdateNewItemHeading)
+    , Attributes.class "columns"
+    , Attributes.class "small-1"
     ]
     [ option [] [ text happy ]
     , option [] [ text meh ]
@@ -217,16 +232,22 @@ itemHeadingSelector address =
 
 itemTextField : Signal.Address Action -> String -> Html
 itemTextField address itemText =
-  input
-    [ Attributes.placeholder "wagwan?"
-    , onEnter address AddItem
-    , Attributes.value itemText
-    , Events.on
-        "input"
-        Events.targetValue
-        (Signal.message address << UpdateNewItem)
+  div
+    [ Attributes.class "columns"
+    , Attributes.class "small-4"
     ]
-    []
+    [ input
+        [ Attributes.placeholder "wagwan?"
+        , Attributes.type' "text"
+        , Attributes.value itemText
+        , onEnter address AddItem
+        , Events.on
+            "input"
+            Events.targetValue
+            (Signal.message address << UpdateNewItem)
+        ]
+        []
+    ]
 
 
 isEnter : Int -> Result String ()
@@ -247,4 +268,13 @@ onEnter address value =
 
 itemAddButton : Signal.Address Action -> Html
 itemAddButton address =
-  button [ Events.onClick address AddItem ] [ text "Add" ]
+  div
+    [ Attributes.class "columns"
+    , Attributes.class "small-1"
+    ]
+    [ button
+        [ Events.onClick address AddItem
+        , Attributes.class "button"
+        ]
+        [ text "Add" ]
+    ]

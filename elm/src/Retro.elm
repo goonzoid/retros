@@ -157,7 +157,7 @@ crossOffItem item itemID =
 
 view : Signal.Address Action -> Model -> Html
 view address model =
-  div [] [ columnViews address model, itemInput address model.newItemText ]
+  div [] [ columnViews address model, br [] [], itemInput address model.newItemText ]
 
 
 columnViews : Signal.Address Action -> Model -> Html

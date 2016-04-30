@@ -208,9 +208,15 @@ itemInput : Signal.Address Action -> String -> Html
 itemInput address itemText =
   div
     [ class "row align-center" ]
-    [ itemHeadingSelector address
-    , itemTextField address itemText
-    , itemAddButton address
+    [ div
+        [ class "small-6 columns" ]
+        [ itemHeadingSelector address
+        , div
+            [ class "input-group" ]
+            [ itemTextField address itemText
+            , itemAddButton address
+            ]
+        ]
     ]
 
 
@@ -221,8 +227,6 @@ itemHeadingSelector address =
         "input"
         Events.targetValue
         (Signal.message address << UpdateNewItemHeading)
-    , class "columns"
-    , class "small-1"
     ]
     [ option [] [ text happy ]
     , option [] [ text meh ]
@@ -232,22 +236,18 @@ itemHeadingSelector address =
 
 itemTextField : Signal.Address Action -> String -> Html
 itemTextField address itemText =
-  div
-    [ class "columns"
-    , class "small-4"
+  input
+    [ placeholder "wagwan?"
+    , class "input-group-field"
+    , type' "text"
+    , value itemText
+    , onEnter address AddItem
+    , Events.on
+        "input"
+        Events.targetValue
+        (Signal.message address << UpdateNewItem)
     ]
-    [ input
-        [ placeholder "wagwan?"
-        , type' "text"
-        , value itemText
-        , onEnter address AddItem
-        , Events.on
-            "input"
-            Events.targetValue
-            (Signal.message address << UpdateNewItem)
-        ]
-        []
-    ]
+    []
 
 
 isEnter : Int -> Result String ()
@@ -269,12 +269,10 @@ onEnter address value =
 itemAddButton : Signal.Address Action -> Html
 itemAddButton address =
   div
-    [ class "columns"
-    , class "small-1"
-    ]
+    [ class "input-group-button" ]
     [ button
         [ Events.onClick address AddItem
-        , class "button"
+        , class "button large"
         ]
         [ text "Add" ]
     ]
